@@ -1,6 +1,45 @@
 # 每周总结可以写在这里
 
-## JavaScript 中的特殊对象
+## JavaScript中普通对象(Ordinary Object Internal Methods and Internal Slots)
+```js
+方法
+[[GetPrototypeOf]]
+[[SetPrototypeOf]]
+[[IsExtensible]]
+[[PreventExtensions]]
+[[GetOwnProperty]]
+[[DefineOwnProperty]]
+[[HasProperty]]
+[[Get]]
+[[Set]]
+[[Delete]]
+[[OwnPropertyKeys]]
+```
+
+## JavaScript中的特殊对象
+
+- ECMAScript Function Objects
+
+```js
+内部槽：
+
+[[Environment]] 函数定义地方的词法环境
+[[FormalParameters]]
+[[FunctionKind]] 函数类型
+[[ECMAScriptCode]]
+[[ConstructorKind]]
+[[Realm]]
+[[ScriptOrModule]]
+[[ThisMode]] 如何解析this
+[[Strict]] 严格模式
+[[HomeObject]] 对这个属性值使用 GetPrototypeOf 来获取 super
+[[SourceText]]
+
+方法：
+[[Call]]
+[[Construct]]
+
+```
 
 - Bound Function Exotic Objects
 
@@ -20,11 +59,31 @@
 
 - String Exotic Objects 字符串对象
 
+```js
+内部槽：
+
+[[StringData]]
+```
+
 - Arguments Exotic Objects 参数对象
+
+```js
+内部槽：
+
+[[ParameterMap]]
+
+```
 
 - Integer-Indexed Exotic Objects
 
-- Module Namespace Exotic Objects
+```js
+特殊槽：
+
+[[ViewedArrayBuffer]]
+[[ArrayLength]]
+[[ByteOffset]]
+[[TypedArrayName]]
+```
 
 - Module Namespace Exotic Objects
 
@@ -36,4 +95,17 @@
 
 - Immutable Prototype Exotic Objects
 
+```js
+内部槽：
+
+[[Prototype]]
+```
+
 - Proxy Object Internal Methods and Internal Slots
+
+```js
+内部槽：
+
+[[ProxyHandler]]
+
+```

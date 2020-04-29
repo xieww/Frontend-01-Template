@@ -55,6 +55,16 @@
 - Array Exotic Objects 数组对象
 
 ```js
+方法：
+
+[[DefineOwnProperty]]
+
+设置对象的length属性，根据length的变化对对象进行操作
+
+newLength > length 用空扩充数组
+
+newLength < length 截取数组
+
 ```
 
 - String Exotic Objects 字符串对象

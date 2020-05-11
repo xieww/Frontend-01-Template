@@ -62,8 +62,7 @@ let current;
 
 while (queue.length) {
   current = queue.shift();
-  console.log(current.path.join("."));
-
+  // console.log(current.path.join("."));
   if (set.has(current.object)) {
     continue;
   }
@@ -71,8 +70,9 @@ while (queue.length) {
 
   let proto = Object.getPrototypeOf(current.object);
   if (proto) {
+    let isExist = current.path.includes("__proto__");
     queue.push({
-      path: current.path.concat(["__proto__"]),
+      path: isExist ? current.path : current.path.concat(["__proto__"]),
       object: proto,
     });
   }

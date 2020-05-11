@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realm</title>
+  <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.3.1/dist/g6.min.js"></script>
+</head>
+<body>
+  <div id="container" style="width: 100%;height: 100%;"></div>
+  <script>
+    const globalProperties = [
+      "eval",
+      "isFinite",
+      "isNaN",
+      "parseFloat",
+      "parseInt",
+      "decodeURI",
+      "decodeURIComponent",
+      "encodeURI",
+      "encodeURIComponent",
+      "Array",
+      "Date",
+      "RegExp",
+      "Promise",
+      "Proxy",
+      "Map",
+      "WeakMap",
+      "Set",
+      "WeakSet",
+      "Function",
+      "Boolean",
+      "String",
+      "Number",
+      "Symbol",
+      "Object",
+      "Error",
+      "EvalError",
+      "RangeError",
+      "ReferenceError",
+      "SyntaxError",
+      "TypeError",
+      "URIError",
+      "ArrayBuffer",
+      "SharedArrayBuffer",
+      "DataView",
+      "Float32Array",
+      "Float64Array",
+      "Int8Array",
+      "Int16Array",
+      "Int32Array",
+      "Uint8Array",
+      "Uint16Array",
+      "Uint32Array",
+      "Uint8ClampedArray",
+      "Atomics",
+      "JSON",
+      "Math",
+      "Reflect",
+    ];
+
+    function transferDataSource() {
+      const dataSource = {
+        id: 'Realm Object',
+        label: 'Realm Object',
+        depth: 0,
+        x: -208,
+        y: -28,
+        object: this,
+        children: [],
+        path: [],
+      };
+      for (const p of globalProperties) {
+        let obj = {};
+        if (typeof this[p] === 'function') {
+          obj = {
+            id: p, // this[p].name
+            label: this[p].name,
+            object: this[p],
+            path: [p],
+          }
+        } else {
+          obj = {
+            id: p,
+            label: this[p].name,
+            object: this[p],
+            path: [p],
+          }
+        }
+        obj = transferProperty(obj);
+        dataSource.children.push(obj);
+      }
+      return dataSource
+    }
+
+    const set = new Set();
+    function transferProperty(current) {
+      if (set.has(current.object)) {
+        console.log("current", current);
+        return current;
+      }
+      set.add(current.object);
+      current.children = [];
+      let proto = Object.getPrototypeOf(current.object);
+      if (proto) {
+        let isExist = current.path.includes("__proto__");
+        if (isExist) {
+          const path = current.path;
+          let obj = {
+            id: path.join('.'),
+            label: path.join('.'),
+            path,
+            object: proto,
+          };
+          obj = transferProperty(obj);
+          current.children.push(obj);
+        } else {
+          const path = current.path.concat(["__proto__"]);
+          let obj = {
+            id: path.join('.'),
+            label: path.join('.'),
+            path,
+            object: proto,
+          };
+          obj = transferProperty(obj);
+          current.children.push(obj);
+        }
+      }
+
+      for (const p of Object.getOwnPropertyNames(current.object)) {
+        var property = Object.getOwnPropertyDescriptor(current.object, p);
+        if (
+          property.hasOwnProperty("value") &&
+          ((property.value !== null && typeof property.value === "object") ||
+            typeof property.value === "object") &&
+          property.value instanceof Object
+        ) {
+          const path = current.path.concat([p]);
+          let obj = {
+            id: `${path.join('.')}:${p}`,
+            label: p,
+            path,
+            object: property.value,
+          };
+          obj = transferProperty(obj)
+          current.children.push(obj)
+        }
+        if (property.hasOwnProperty("get") && typeof property.get === "function") {
+          const path = current.path.concat([p]);
+          const label = property.get.name ? property.get.name : `get ${p}`;
+          let obj = {
+            id: `${path.join('.')}:${label}`,
+            label,
+            path,
+            object: property.get,
+          };
+          obj = transferProperty(obj)
+          current.children.push(obj)
+        }
+        if (property.hasOwnProperty("set") && typeof property.set === "function") {
+          const path = current.path.concat([p]);
+          const label = property.set.name ? property.set.name : `set ${p}`;
+          let obj = {
+            id: `${path.join('.')}:${label}`,
+            label,
+            path,
+            object: property.set,
+          };
+          obj = transferProperty(obj)
+          current.children.push(obj)
+        }
+      }
+      return current;
+    }
+
+    function run() {
+      const width = document.getElementById('container').scrollWidth;
+      const height = document.getElementById('container').scrollHeight || 1000;
+      const graph = new G6.TreeGraph({
+        container: 'container',
+        width,
+        height,
+        modes: {
+          default: [
+            {
+              type: 'collapse-expand',
+              onChange: function onChange(item, collapsed) {
+                const data = item.get('model').data;
+                data.collapsed = collapsed;
+                return true;
+              },
+            },
+            'drag-canvas',
+            'zoom-canvas',
+          ],
+        },
+        defaultNode: {
+          size: 26,
+          anchorPoints: [
+            [0, 0.5],
+            [1, 0.5],
+          ],
+          style: {
+            fill: '#C6E5FF',
+            stroke: '#5B8FF9',
+          },
+        },
+        defaultEdge: {
+          type: 'cubic-horizontal',
+          style: {
+            stroke: '#A3B1BF',
+          },
+        },
+        layout: {
+          type: 'mindmap',
+          direction: 'H',
+          getHeight: () => {
+            return 16;
+          },
+          getWidth: () => {
+            return 16;
+          },
+          getVGap: () => {
+            return 10;
+          },
+          getHGap: () => {
+            return 100;
+          },
+          // getSide: () => {
+          //   return 'right';
+          // },
+        },
+      });
+
+      let centerX = 0;
+      graph.node(function (node) {
+        if (node.id === 'Modeling Methods') {
+          centerX = node.x;
+        }
+
+        return {
+          label: node.id,
+          labelCfg: {
+            position:
+              node.children && node.children.length > 0
+                ? 'right'
+                : node.x > centerX
+                  ? 'right'
+                  : 'left',
+            offset: 5,
+          },
+        };
+      });
+      const data = transferDataSource();
+      graph.data(data);
+      graph.render();
+      graph.fitView();
+    }
+
+    run()
+    // console.log('transferDataSource()', );
+  </script>
+</body>
+</html>

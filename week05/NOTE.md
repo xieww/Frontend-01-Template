@@ -40,13 +40,11 @@
 |5**	|服务器错误，服务器在处理请求的过程中发生了错误|
 
 >HTTP 头（Header）
-
 > > 请求头（Request Header）
 
     GET / HTTP/1.0
     User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5)
     Accept: */*
-
 > > 响应头（Response Header）
 
     HTTP/1.0 200 OK 

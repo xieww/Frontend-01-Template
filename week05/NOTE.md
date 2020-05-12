@@ -19,6 +19,7 @@
        除了GET方式外还加入了POST和HEAD方式。
 
 >HTTP方法
+
 > + GET
 > + POST
 > + HEAD
@@ -37,3 +38,20 @@
 |3**	|重定向，需要进一步的操作以完成请求|
 |4**	|客户端错误，请求包含语法错误或无法完成请求|
 |5**	|服务器错误，服务器在处理请求的过程中发生了错误|
+
+>HTTP 头（Header）
+
+> > 请求头（Request Header）
+
+    GET / HTTP/1.0
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5)
+    Accept: */*
+
+> > 响应头（Response Header）
+
+    HTTP/1.0 200 OK 
+    Content-Type: text/plain
+    Content-Length: 137582
+    Expires: Thu, 05 Dec 1997 16:00:00 GMT
+    Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+    Server: Apache 0.84

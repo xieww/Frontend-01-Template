@@ -1,5 +1,8 @@
 # 每周总结可以写在这里
 
+## Realm Object
+[Realm Object可视化](https://codesandbox.io/s/little-lake-31s9r?file=/index.html)
+
 ## 浏览器工作原理
 
 七层网络协议(OSI)
@@ -40,6 +43,7 @@
 |5**	|服务器错误，服务器在处理请求的过程中发生了错误|
 
 >HTTP 头（Header）
+
     请求头（Request Header）
 
     GET / HTTP/1.0

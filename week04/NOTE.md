@@ -1,6 +1,6 @@
 # 每周总结可以写在这里
 
-[Realm Object思维导图](https://codesandbox.io/s/little-lake-31s9r?file=/index.html)
+[Realm Object可视化](https://codesandbox.io/s/little-lake-31s9r?file=/index.html)
 
 >宏任务
 

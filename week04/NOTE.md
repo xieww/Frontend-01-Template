@@ -59,14 +59,16 @@ afoo()
 // 宏任务
 // 2
 // 3
-```
-
-![Chrome运行结果](./image/1.png)
-
-```js
 // 运行结果2： sarfir
 // 0 4 -2 1 1.5 -1 2 3
 // 例题
+```
+Chrome运行结果
+![Chrome运行结果](./image/1.png)
+Safari运行结果
+![Safari运行结果](./image/2.png)
+
+```js
 async function afoo() {
     console.log("-2")
     await new Promise(resolve => resolve());
@@ -85,88 +87,9 @@ setTimeout(function () {
 }, 0)
 console.log("4");
 afoo()
-// 运行结果与上题一样
-// 例题
-console.log('script start');
-
-setTimeout(function() {
-  console.log('setTimeout');
-}, 0);
-
-Promise.resolve().then(function() {
-  console.log('promise1');
-}).then(function() {
-  console.log('promise2');
-});
-
-console.log('script end');
-
-// chrome script start script end promise1 promise2 setTimeout
-
-// 头条面试题
-async function async1(){
-    console.log('async1 start')
-    await async2()
-    console.log('async1 end')
-}
-async function async2(){
-    console.log('async2')
-}
-console.log('script start')
-setTimeout(function(){
-    console.log('setTimeout') 
-},0)  
-async1();
-new Promise(function(resolve){
-    console.log('promise1')
-    resolve();
-}).then(function(){
-    console.log('promise2')
-})
-console.log('script end')
-// chrome script start  async1 start   async2  promise1  script end   promise2  async1 end  setTimeout
-// sarfir script start  async1 start   async2  promise1  script end   async1 end  promise2  setTimeout
-
-
-// new Promise(resolve=>resolve())
-//     .then(()=>setTimeout(()=>console.log(1),1000),console.log(0))
-// console.log(2)
-
-// david
-function sleep(duration) {
-    return new Promise(function (resolve, reject) {
-        console.log("b");
-        // setTimeout(function () {
-            resolve();
-            var begin = Date.now();
-            while (Date.now() - begin < 1000);
-            console.log("d");
-        // }, duration);
-    })
-}
-console.log("a");
-sleep(0).then(() => console.log("c"));
-// a b d c
-
-async function async1() {
-    console.log('async1 start');
-    await async2();
-    console.log('async1 end');
-}
-async function async2() {
-    console.log('async2');
-}
-async1();
-new Promise(function (resolve) {
-    console.log('promise1');
-    resolve();
-}).then(function () {
-    console.log('promise2');
-});
-// async1 start
-// async2
-// promise1
-
-// async1 end
-// promise2
 ```
+Chrome运行结果
+![Chrome运行结果](./image/3.png)
+Safari运行结果
+![Safari运行结果](./image/4.png)
+

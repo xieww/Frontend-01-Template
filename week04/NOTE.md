@@ -3,7 +3,12 @@
 [Realm Object可视化](https://codesandbox.io/s/little-lake-31s9r?file=/index.html)
 
 >宏任务
-
+        <font color=#e83e8c>script</font>
+        <font color=#e83e8c>setTimeout</font>
+        <font color=#e83e8c>setInterval</font>
+        <font color=#e83e8c>setImmediate</font>
+        <font color=#e83e8c>I/O</font>
+        <font color=#e83e8c>UI rendering</font>
         1、脚本，渲染事件（如解析DOM，计算布局，布局）
         2、mousemove等UI事件，用户互动事件（如鼠标点击，滚动页面，放大缩小等）
         3、setTimeout / setInterval当JS引擎忙于执行宏任务时，宏任务就会形成一个
@@ -16,6 +21,10 @@
 
         微任务就是一个需要异步执行的函数，执行时机是在主函数执行结束之后，当前宏任
         务结束之前。
+        <font color=#e83e8c>process.nextTick</font>
+        <font color=#e83e8c>process</font>
+        <font color=#e83e8c>Object.observe</font>
+        <font color=#e83e8c>MutationObserver</font>
         1、微任务和宏任务是绑定的，每个宏任务在执行时，会创建自己的微任务副本
         2、一些一个宏任务在执行过程中，产生了100个微任务，执行每个微任务的时间是10
            毫秒，那么执行这100个微任务的时间。就是1000毫秒，也可以说这100个微任务

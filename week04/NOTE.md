@@ -61,7 +61,7 @@ afoo()
 // 3
 ```
 
-![Chrome运行结果](./image.png)
+![Chrome运行结果](./image/1.png)
 
 ```js
 // 运行结果2： sarfir

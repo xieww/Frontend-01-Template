@@ -3,6 +3,7 @@
 [Realm Object可视化](https://codesandbox.io/s/little-lake-31s9r?file=/index.html)
 
 >宏任务
+
         宏任务包含： script、setTimeout、setInterval、setImmediate、I/O、UI rendering
         1、脚本，渲染事件（如解析DOM，计算布局，布局）
         2、mousemove等UI事件，用户互动事件（如鼠标点击，滚动页面，放大缩小等）
@@ -13,6 +14,7 @@
         4、JavaScript脚本执行事件；网络请求完成，文件读写完成事件。为了协调这些任务有条不扭曲地在主线程上执行，页面进程重新启动消息事件和事件循环机制，渲染内部会维护多个消息变量，而不连续进行。然后将主线程采用一个进行循环，不断地从这些任务中取任务并执行任务。我们把这些消息本身的任务称为宏任务。
 
 >微任务
+
         微任务包含有：process.nextTick、promise、Object.observe、MutationObserver
         微任务就是一个需要异步执行的函数，执行时机是在主函数执行结束之后，当前宏任
         务结束之前。

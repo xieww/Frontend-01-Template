@@ -51,3 +51,7 @@ function foundB2(s) {
 }
 
 console.log(match("abababx"));
+console.log(match("I am axbabababx"))
+console.log(match("I am bacaabababababx"))
+console.log(match("I am aababaeababx"))
+console.log(match("I am babababaabx "))

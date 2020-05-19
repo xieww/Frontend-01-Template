@@ -58,4 +58,7 @@ function foundB2(s) {
   }
 }
 
-console.log(match("abcabcabx")); // abcabcabx
+console.log(match("I am abcabcabx")); 
+console.log(match("I am aaabcabcabx"));
+console.log(match("I am ababcabcabx"));
+console.log(match("I am xabcabcabc"));

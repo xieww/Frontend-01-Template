@@ -88,7 +88,7 @@ void (async function () {
 
 ![运行结果](./image/1.png)
 
-## CSS @ Rules
+## CSS规则及其结构
 
 - [@charset](https://www.w3.org/TR/css-syntax-3/)
 - [@import](https://www.w3.org/TR/css-cascade-4/)
@@ -99,9 +99,6 @@ void (async function () {
 - [@fontface](https://www.w3.org/TR/css-fonts-3/)
 - [@supports](https://www.w3.org/TR/css3-conditional/)
 - [@namespace](https://www.w3.org/TR/css-namespaces-3/)
-
-## CSS 规则的结构
-
 - Selector - [selectors-3](https://www.w3.org/TR/selectors-3/) - [selectors-4](https://www.w3.org/TR/selectors-4/)
 - Key - Properties - Variables - [css-variables](https://www.w3.org/TR/css-variables/)
 - Value - [css-values-4](https://www.w3.org/TR/css-values-4/)

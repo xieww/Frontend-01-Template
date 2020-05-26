@@ -1,22 +1,15 @@
 const Koa = require("koa");
 const superagent = require("superagent");
 const cheerio = require("cheerio");
+const views = require("koa-views");
+const path = require("path");
 
 const app = new Koa();
 const URL = "https://www.w3.org/TR/?tag=css";
-
-app.use(async (ctx, next) => {
-  await next();
-  ctx.response.type = "text/html";
-  ctx.response.body = "<h1>hello world</h1>";
-});
-
-app.listen(3000, () => {
-  console.log("服务器启动在3000端口");
-});
-
 const dataList = [];
+
 const transferData = (html) => {
+  console.log("==========开始处理数据============");
   const $ = cheerio.load(html.text);
   $("ul#container li").each((idx, ele) => {
     // cherrio中$('selector').each()用来遍历所有匹配到的DOM元素
@@ -29,7 +22,7 @@ const transferData = (html) => {
       });
     }
   });
-  console.log("dataList", dataList);
+  console.log("==========结束处理数据============");
 };
 
 const fetchHtml = () => {
@@ -37,33 +30,24 @@ const fetchHtml = () => {
   superagent.get(URL).end((error, res) => {
     if (!error) {
       console.log("==========抓取页面结束============");
-      console.log("==========开始处理数据============");
       transferData(res);
-      console.log("==========结束处理数据============");
     }
   });
 };
 
-fetchHtml();
+app.use(
+  views(path.join(__dirname, "./view"), {
+    extension: "ejs",
+  })
+);
 
-let iframe = document.createElement("iframe");
-document.body.innerHTML = "";
-document.body.appendChild(iframe);
-
-const happen = (element, event) => {
-  return new Promise((resolve) => {
-    let handler = () => {
-      resolve();
-      element.removeEventListener(event, handler);
-    };
-    element.addEventListener(event, handler);
+app.use(async (ctx) => {
+  await ctx.render("index", {
+    dataList,
   });
-};
+});
 
-void (async function () {
-  for (let item of dataList) {
-    iframe.src = item.url;
-    console.log(item.name);
-    await happen(iframe, "load");
-  }
-})();
+app.listen(3000, () => {
+  console.log("服务器启动在3000端口");
+  fetchHtml();
+});

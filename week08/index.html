@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="main">
+    <div id="app" class="container">css</div>
+  </div>
+  <script>
+    function match(selector, element) {
+      if (!selector || !element.attributes) {
+        return false;
+      }
+      const regPattern = /(#[a-zA-Z]+[_a-zA-Z0-9-]*?)|(\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*)|([a-z]+)/g
+      const selectorArray = selector.match(regPattern)
+      for (const sa of selectorArray) {
+        if (sa.charAt(0) === "#") {
+          var attr = element.attributes.filter((attr) => attr.name === "id")[0];
+          if (attr && attr.value === sa.replace("#", "")) {
+            return true;
+          }
+        } else if (sa.charAt(0) === ".") {
+          var attr = element.attributes.filter((attr) => attr.name === "class")[0];
+          if (attr && attr.value === sa.replace(".", "")) {
+            return true;
+          }
+        } else {
+          if (element.tagName.toLowerCase() === sa) {
+            return true;
+          }
+        }
+      }
+    }
+
+    console.log(match("div #app.container", document.getElementById("main")));
+  </script>
+</body>
+
+</html>

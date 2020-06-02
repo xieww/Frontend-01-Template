@@ -21,7 +21,6 @@
         for (let i = 0; i < attributes.length; i++) {
           const attr = attributes[i];
           for (const sa of selectorArray) {
-            console.log('sa', sa, i);
             if (sa.charAt(0) === "#") {
               if (attr && attr.value === sa.replace("#", "")) {
                 sign = true;

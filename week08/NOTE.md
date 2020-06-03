@@ -95,6 +95,35 @@ _有些 HTML 属性含有特殊字符，这个时候，可以把 val 用引号�
 - :focus 表示焦点落在这个元素之上。
 - :target 用于选中浏览器 URL 的 hash 部分所指示的元素。
 
+**微元素**
+
+- ::before
+  - ::after
+  - ::first-line
+  - ::first-letter
+  - 可用属性
+    - ::first-line 可用属性：
+      - font 系列
+      - color 系列
+      - background 系列
+      - word-spacing
+      - letter-spacing
+      - text-decoration
+      - text-transform
+      - line-height
+    - ::first-letter 可用属性：
+      - font 系列
+      - color 系列
+      - background 系列
+      - word-spacing
+      - letter-spacing
+      - text-decoration
+      - text-transform
+      - line-height
+      - float
+      - vertical-align
+      - 盒模型系列：margin、padding、border
+
 **CSS 优先级**
 
 > 优先级关系
@@ -105,6 +134,11 @@ _有些 HTML 属性含有特殊字符，这个时候，可以把 val 用引号�
     2. B 的值等于 ID选择器 出现的次数;
     3. C 的值等于 类选择器 和 属性选择器 和 伪类 出现的总次数;
     4. D 的值等于 标签选择器 和 伪元素 出现的总次数 。
+    (注：*、:not()不参与计算优先级的权重)
+
+    权重计算
+        * S = a * (N ** 3) + b * (N ** 2) + c * N + d;
+        * N取一个足够大的整数，比如1000000
 
 ```js
 #id div.a#id  优先级[0,2,1,1]

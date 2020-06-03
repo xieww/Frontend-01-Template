@@ -15,31 +15,29 @@
     function selectorFn(selector, element) {
       const regPattern = /(#[a-zA-Z]+[_a-zA-Z0-9-]*?)|(\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*)|([a-z]+)/g;
       const selectorArray = selector.match(regPattern);
+      let isMatch = false;
       if (element.hasAttributes()) {
         const attributes = element.attributes;
-        let sign = false;
         for (let i = 0; i < attributes.length; i++) {
           const attr = attributes[i];
           for (const sa of selectorArray) {
             if (sa.charAt(0) === "#") {
               if (attr && attr.value === sa.replace("#", "")) {
-                sign = true;
-                m = false;
+                isMatch = true;
               }
             } else if (sa.charAt(0) === ".") {
               if (attr && attr.value === sa.replace(".", "")) {
-                sign = true;
-                m = false;
+                isMatch = true;
               }
             }
           }
         }
-        return sign;
       } else {
         if (element.tagName.toLowerCase() === sa) {
-          return true;
+          isMatch = true;
         }
       }
+      return isMatch;
     }
 
     function match(selector, element) {

@@ -85,12 +85,16 @@ div {
     一个量（可以是任何矢量或者标量）从一个值到变化到另一个值，如果我们希望它按照一定时间平滑地过渡，就必须要对它进行插值。
     最基本的情况，我们认为这个变化是按照时间均匀进行的，这个时候，我们称其为线性插值。而实际上，线性插值不大能满足我们的需要，因此数学上出现了很多其它的插值算法，其中贝塞尔插值法是非常典型的一种。它根据一些变换中的控制点来决定值与时间的关系。
 
+```js
+
+```
+
 > 常用实体
 
-    - &quot;(")
-    - &lt;(<)
-    - &gt;(>)
-    - &amp;(&)
+    &quot;(")
+    &lt;(<)
+    &gt;(>)
+    &amp;(&)
 
 ### 合法元素
 
@@ -146,6 +150,8 @@ div {
 - Crypto
 
 ### css 属性及对应文档地址
+![脑图](./css_property.png)
+
 
 [animation-delay](https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-delay)  
 [animation-direction](https://www.w3.org/TR/2018/WD-css-animations-1-20181011/#propdef-animation-direction)  

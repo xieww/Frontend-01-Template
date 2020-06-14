@@ -78,7 +78,7 @@
     <div id="checkerboard"></div>
     <div class="toolbar">
       <a class="button" id="restart">重新开始</a>
-      <a class="button" id="tip">提示</a>
+      <!-- <a class="button" id="tip">提示</a> -->
       <a class="button" id="regret">悔棋</a>
     </div>
   </div>
@@ -94,7 +94,7 @@
   let previous = {};
 
   const restart = document.getElementById("restart");
-  const tip = document.getElementById("tip");
+  // const tip = document.getElementById("tip");
   const regret = document.getElementById("regret");
   restart.addEventListener("click", () => {
     isOver = true;
@@ -107,9 +107,9 @@
     show();
   });
 
-  tip.addEventListener("click", () => {
-    console.log(besrChoice(pattern, color));
-  })
+  // tip.addEventListener("click", () => {
+  //   console.log(besrChoice(pattern, color));
+  // })
 
   regret.addEventListener("click", () => {
     color = 0;

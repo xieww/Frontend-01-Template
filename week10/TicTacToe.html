@@ -1,0 +1,261 @@
+<style>
+  .container {
+    width: 100%;
+    height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #checkerboard {
+    padding: 20px;
+    background-color: #FFBB00;
+  }
+
+  .cell {
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    border: solid 1px #000000;
+    vertical-align: middle;
+    line-height: 100px;
+    text-align: center;
+  }
+
+  .cell_container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .black_chess {
+    text-align: center;
+    background-color: #000000;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .white_chess {
+    text-align: center;
+    background-color: #FFFFFF;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .container .toolbar {
+    position: relative;
+    padding: 1em;
+    margin: 1em 0;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .container .toolbar .button {
+    margin: 0 0.25em 0 0;
+    padding: .78571429em 1.5em .78571429em;
+    display: inline-block;
+    cursor: pointer;
+    min-height: 1em;
+    outline: 0;
+    border: none;
+    vertical-align: baseline;
+    text-transform: none;
+    font-weight: 400;
+    line-height: 1em;
+    text-align: center;
+    border-radius: .14285714rem;
+    background-color: #FFBB00;
+    color: #fff;
+  }
+</style>
+<div class="container">
+  <div>
+    <h1>井字棋</h1>
+    <div id="checkerboard"></div>
+    <div class="toolbar">
+      <a class="button" id="restart">重新开始</a>
+      <a class="button" id="tip">提示</a>
+      <a class="button" id="regret">悔棋</a>
+    </div>
+  </div>
+</div>
+<script>
+  let pattern = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
+  let color = 1;
+  let isOver = false;
+  let previous = {};
+
+  const restart = document.getElementById("restart");
+  const tip = document.getElementById("tip");
+  const regret = document.getElementById("regret");
+  restart.addEventListener("click", () => {
+    isOver = true;
+    color = 0;
+    pattern = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ];
+    show();
+  });
+
+  tip.addEventListener("click", () => {
+    console.log(besrChoice(pattern, color));
+  })
+
+  regret.addEventListener("click", () => {
+    color = 0;
+    pattern[previous.y][previous.x] = 0;
+    show();
+    console.log('color', color, previous);
+  })
+
+  function show() {
+    let checkerboard = document.getElementById("checkerboard");
+    checkerboard.innerHTML = "";
+    const BlackChess = '<div class="cell_container"><div class="black_chess"></div></div>';
+    const WhiteChess = '<div class="cell_container"><div class="white_chess"></div></div>';
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        let cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.innerHTML = pattern[i][j] == 2 ? BlackChess :
+          pattern[i][j] == 1 ? WhiteChess : "";
+        cell.addEventListener("click", () => move(j, i));
+        checkerboard.appendChild(cell);
+      }
+      checkerboard.appendChild(document.createElement("br"))
+    }
+  }
+
+  function move(x, y) {
+    // if (pattern[y][x] !== 0) {
+    //   return;
+    // }
+    pattern[y][x] = color;
+    if (check(pattern, color)) {
+      alert(color === 2 ? "黑棋赢了" : "白棋赢了");
+      isOver = true;
+    }
+    color = 3 - color;
+    previous = { x, y, color };
+    show();
+    if (willWin(pattern, color)) {
+      console.log(color === 2 ? "黑棋要赢了" : "白棋要赢了");
+    }
+  }
+
+  function check(pattern, color) {
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[i][j] !== color) {
+          win = false;
+          break;
+        }
+        if (win) {
+          return true;
+        }
+      }
+    }
+    for (let i = 0; i < 3; i++) {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][i] !== color) {
+          win = false;
+          break;
+        }
+        if (win) {
+          return true;
+        }
+      }
+
+      {
+        let win = true;
+        for (let j = 0; j < 3; j++) {
+          if (pattern[j][j] !== color) {
+            win = false;
+            break;
+          }
+          if (win) {
+            return true;
+          }
+        }
+      }
+      {
+        let win = true;
+        for (let j = 0; j < 3; j++) {
+          if (pattern[j][2 - j] !== color) {
+            win = false;
+            break;
+          }
+          if (win) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  function clone(pattern) {
+    return JSON.parse(JSON.stringify(pattern));
+  }
+
+  function willWin(pattern, color) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (pattern[i][j]) {
+          continue;
+        }
+        let tmp = clone(pattern);
+        tmp[i][j] = color;
+        if (check(tmp, color)) {
+          return [j, i];
+          // return true;
+        }
+      }
+    }
+    return null; // false
+  }
+
+  function besrChoice(pattern, color) {
+    let point = willWin(pattern, color);
+    if (point) {
+      return { point, result: 1 };
+    }
+
+    let result = -1;
+    outer: for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (pattern[i][j] !== 0) {
+          continue;
+        }
+        let tmp = clone(pattern);
+        tmp[i][j] = color;
+        let opp = besrChoice(tmp, 3 - color);
+        const op = -opp.result;
+        if (op >= result) {
+          point[j, i];
+          result = op;
+        }
+        if (result === 1) {
+          break outer;
+        }
+      }
+    }
+    return {
+      point,
+      result: point ? result : 0,
+    };
+  }
+  show();
+</script>

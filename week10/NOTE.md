@@ -62,13 +62,22 @@ range.insertNode(document.createTextNode("aaa"));
 
 ### document.styleSheets
 
-- document.styleSheets
+```js
 
-### Rules
+// 获取文档中所有de样式表
+document.styleSheets
+// document 的 styleSheets 属性表示文档中的所有样式表，这是一个只读的列表，我们可以用方括号运算符下标访问样式表，也可以使用 item 方法来访问，它有 length 属性表示文档中的样式表数量。
 
-- document.styleSheets[0].cssRules
-- document.styleSheets[0].insertRule("p { color: pink }", 0)
-- document.styleSheets[0].removeRule(0)
+// 样式表只能使用 style 标签或者 link 标签创建。
+
+// 修改样式表中的内容
+document.styleSheets[0].insertRule("p { color:pink; }", 0)
+document.styleSheets[0].removeRule(0)
+
+// 获取样式表中特定的规则（Rule)
+document.styleSheets[0].cssRules
+
+```
 
 ### Rule
 

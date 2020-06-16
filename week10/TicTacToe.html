@@ -92,12 +92,18 @@
   ];
   let color = 1;
   let previous = {};
+  let isOver = false;
 
   const restart = document.getElementById("restart");
   // const tip = document.getElementById("tip");
   const regret = document.getElementById("regret");
   restart.addEventListener("click", () => {
+    reStart();
+  });
+
+  function reStart() {
     color = 1;
+    isOver = false;
     pattern = [
       [0, 0, 0],
       [0, 0, 0],
@@ -106,17 +112,17 @@
     previous = {};
     document.getElementById('result').innerText = "";
     show();
-  });
+  }
 
   // tip.addEventListener("click", () => {
   //   console.log(bestChoice(pattern, color));
   // })
 
   regret.addEventListener("click", () => {
-    color = 0;
+    color = previous.color;
     pattern[previous.y][previous.x] = 0;
+    pattern[previous.yy][previous.xx] = 0;
     show();
-    console.log('color', color, previous);
   })
 
   function show() {
@@ -130,37 +136,45 @@
         cell.classList.add("cell");
         cell.innerHTML = pattern[i][j] == 2 ? BlackChess :
           pattern[i][j] == 1 ? WhiteChess : "";
-        cell.addEventListener("click", () => move(j, i));
+        cell.addEventListener("click", () => userMove(j, i));
         checkerboard.appendChild(cell);
       }
       checkerboard.appendChild(document.createElement("br"))
     }
   }
 
-  function move(x, y) {
-    pattern[y][x] = color;
+  function userMove(x, y) {
+    if (isOver || pattern[y][x]) {
+      const c = confirm("本场游戏已经结束,是否重新开始");
+      if (c) {
+        reStart();
+      };
+      return;
+    };
+    pattern[y][x] = color
     if (check(pattern, color)) {
+      isOver = true
       document.getElementById('result').innerText =
         color === 2 ? '黑棋胜利✌️' :
           color === 1 ? '白棋胜利✌️' :
             '系统错误';
     }
-    color = 3 - color;
-    previous = { x, y, color };
-    show();
-    computeMove();
-    // if (willWin(pattern, color)) {
-    //   console.log(color === 2 ? "黑棋要赢了" : "白棋要赢了");
-    // }
+    color = 3 - color
+    previous = { ...previous, x, y, color };
+    show()
+    if (!isOver)
+      setTimeout(() => computerMove(), 500)
   }
 
-  function computeMove() {
+  function computerMove() {
     let choice = bestChoice(pattern, color);
     if (choice.point) {
       pattern[choice.point[1]][choice.point[0]] = color;
+      previous = { ...previous, xx: choice.point[0], yy: choice.point[1], color };
     }
 
     if (check(pattern, color)) {
+      isOver = true;
       document.getElementById('result').innerText =
         color === 2 ? '黑棋胜利✌️' :
           color === 1 ? '白棋胜利✌️' :
@@ -176,21 +190,24 @@
       for (let j = 0; j < 3; j++) {
         if (pattern[i][j] !== color) {
           win = false;
-        }
-        if (win) {
-          return true;
+          break;
         }
       }
+      if (win) {
+        return true;
+      }
     }
+
     for (let i = 0; i < 3; i++) {
       let win = true;
       for (let j = 0; j < 3; j++) {
         if (pattern[j][i] !== color) {
           win = false;
+          break;
         }
-        if (win) {
-          return true;
-        }
+      }
+      if (win) {
+        return true;
       }
     }
     {
@@ -198,10 +215,11 @@
       for (let j = 0; j < 3; j++) {
         if (pattern[j][j] !== color) {
           win = false;
+          break;
         }
-        if (win) {
-          return true;
-        }
+      }
+      if (win) {
+        return true;
       }
     }
     {
@@ -211,9 +229,9 @@
           win = false;
           break;
         }
-        if (win) {
-          return true;
-        }
+      }
+      if (win) {
+        return true;
       }
     }
     return false;
@@ -256,7 +274,7 @@
         let opp = bestChoice(tmp, 3 - color);
         const op = 0 - opp.result;
         if (op >= result) {
-          point[j, i];
+          point = [j, i];
           result = op;
         }
         if (result === 1) {

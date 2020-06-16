@@ -60,8 +60,6 @@ range.insertNode(document.createTextNode("aaa"));
 
 ## CSSOM
 
-### document.styleSheets
-
 ```js
 
 // 获取文档中所有de样式表

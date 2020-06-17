@@ -21,11 +21,15 @@
   }
 
   /******************Range方式**********************/
+  /**
+  * 这种方式对真实DOM只有两次操作
+  * 第一次是extractContents方法摘掉所选节点
+  * 第二次是element.appendChild(fragment)将处理完成的节点追加回element
+  **/
   function reverseElement(element) {
     let range = new Range();
     range.selectNodeContents(element);
     let fragment = range.extractContents();
-
     let len = fragment.childNodes.length;
     while (len--) {
       fragment.appendChild(fragment.childNodes[len]);

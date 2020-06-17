@@ -48,11 +48,17 @@
 - extractContents
 - insertNode
 
+>创建range的方式
+
 ```js
+// 第一种
 var range = new Range();
 range.setStart(element, 3);
 range.setEnd(element, 6);
+
+// 第二种
 var range = document.getSelection().getRangeAt(0);
+
 
 var fragment = range.extractContents();
 range.insertNode(document.createTextNode("aaa"));

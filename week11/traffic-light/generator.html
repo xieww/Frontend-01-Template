@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>traffic light</title>
+  <style>
+    #container>div {
+      display: inline-block;
+      background-color: grey;
+      margin: 30px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+    .red.light {
+      background-color: red !important;
+    }
+
+    .yellow.light {
+      background-color: yellow !important;
+    }
+
+    .green.light {
+      background-color: limegreen !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div class="red"></div>
+    <div class="yellow"></div>
+    <div class="green"></div>
+  </div>
+  <script>
+    function reset() {
+      const lights = document.getElementById("container").children;
+      for (let i = 0; i < lights.length; i++) {
+        lights[i].classList.remove("light");
+      }
+    }
+    function red() {
+      reset();
+      document.getElementsByClassName("red")[0].classList.add("light");
+    }
+
+    function green() {
+      reset();
+      document.getElementsByClassName("green")[0].classList.add("light");
+
+    }
+
+    function yellow() {
+      reset();
+      document.getElementsByClassName("yellow")[0].classList.add("light");
+    }
+
+    function sleep(time) {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, time);
+      });
+    }
+
+    function happen(element, eventName) {
+      return new Promise((resolve, reject) => {
+        document.addEventListener(eventName, resolve, { once: true })
+      });
+    }
+
+    function* go() {
+      while (true) {
+        green();
+        yield sleep(10000);
+        yellow();
+        yield sleep(5000);
+        red();
+        yield sleep(2000);
+        go();
+      }
+    }
+
+    function run(iterator) {
+      let { value, done } = iterator.next();
+      if (done) {
+        return;
+      }
+      if (value instanceof Promise) {
+        value.then(() => {
+          run(iterator);
+        })
+      }
+    }
+
+
+    function co(generator) {
+      return function () {
+        return run(generator());
+      }
+    }
+
+    go = co(go)
+  </script>
+</body>
+
+</html>

@@ -73,7 +73,7 @@
 
     function happen(element, eventName) {
       return new Promise((resolve, reject) => {
-        document.addEventListener(eventName, resolve, { once: true })
+        document.addEventListener(eventName, resolve, { once: true }); // once 只执行一次
       });
     }
 

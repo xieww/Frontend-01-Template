@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>traffic light</title>
   <style>
+    #container {
+      width: 500px;
+      background: #282f2f;
+      border-radius: 50px;
+      box-shadow: 0 0 0 2px #eee inset;
+      text-align: center;
+    }
+
     #container>div {
       display: inline-block;
       background-color: grey;
-      margin: 30px;
+      margin: 20px;
       width: 100px;
       height: 100px;
       border-radius: 50%;
@@ -27,6 +36,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="container">
     <div class="red"></div>
@@ -63,9 +73,9 @@
       });
     }
 
-    function happen(element,eventName) {
-      return new Promise((resolve,reject) => {
-        document.addEventListener(eventName,resolve,{once: true})
+    function happen(element, eventName) {
+      return new Promise((resolve, reject) => {
+        document.addEventListener(eventName, resolve, { once: true })
       });
     }
 
@@ -73,11 +83,11 @@
       const element = document.getElementById("next");
       while (true) {
         green();
-        await happen(element,"click");
+        await happen(element, "click");
         yellow();
-        await happen(element,"click");
+        await happen(element, "click");
         red();
-        await happen(element,"click");
+        await happen(element, "click");
         run();
       }
     }
@@ -85,4 +95,5 @@
     run();
   </script>
 </body>
+
 </html>

@@ -1,0 +1,23 @@
+<script>
+  class Trie {
+    constructor() {
+      this.root = Object.create(null);
+    }
+
+    insert(word) {
+      let node = this.root;
+      for (const w of word) {
+        if (!node[w]) {
+          node[w] = Object.create(null);
+          node = node[w];
+        }
+      }
+
+      if (!("$" in node)) {
+        node["$"] = 0;
+      }
+      node["$"]++;
+    }
+  }
+  let trie = new Trie();
+</script>

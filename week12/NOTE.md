@@ -29,6 +29,30 @@
 
     此也意味着在某个字符失配时，该字符对应的next值会告诉你下一步匹配中，模式串应该跳到哪个位置（跳到next[j]的位置）。如果next[j]等于0或 -1，则跳到模式串的开头字符，若next[j] = k 且 k > 0，代表下次匹配跳到j之前的某个字符，而不是跳到开头，且具体跳过了k个字符。
 
+
+```js
+
+// 算法复杂度为O(m+n) 双层for循环
+function find(source, pattern) {
+  if (!source || !pattern) {
+    return false;
+  }
+  for (let i = 0; i < source.length; i++) {
+    let matched = true;
+    for (let j = 0; j < pattern.length; j++) {
+      if (source[i + j] !== pattern[j]) {
+        matched = false;
+        break;
+      }
+    }
+    if (matched) {
+      return true;
+    }
+  }
+  return false;
+}
+```
+
 ```js
 function find(source, pattern) {
   let table = new Array(pattern.length).fill(0);

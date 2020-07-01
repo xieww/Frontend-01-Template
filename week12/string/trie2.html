@@ -1,4 +1,5 @@
 <script>
+  // 字典树
   class Trie {
     constructor() {
       this.root = Object.create(null);
@@ -9,8 +10,8 @@
       for (const w of word) {
         if (!node[w]) {
           node[w] = Object.create(null);
-          node = node[w];
         }
+        node = node[w];
       }
 
       if (!("$" in node)) {

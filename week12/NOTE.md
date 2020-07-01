@@ -29,9 +29,7 @@
 
     此也意味着在某个字符失配时，该字符对应的next值会告诉你下一步匹配中，模式串应该跳到哪个位置（跳到next[j]的位置）。如果next[j]等于0或 -1，则跳到模式串的开头字符，若next[j] = k 且 k > 0，代表下次匹配跳到j之前的某个字符，而不是跳到开头，且具体跳过了k个字符。
 
-
 ```js
-
 // 算法复杂度为O(m+n) 双层for循环
 function find(source, pattern) {
   if (!source || !pattern) {
@@ -88,3 +86,6 @@ function find(source, pattern) {
   return false;
 }
 ```
+
+> LR： LR 分析器是一种自底向上（bottom-up）的上下文无关语法分析器。LR 意指由左（Left）至右处理输入字符串，并以最右边优先派生（Right derivation）的推导顺序（相对于 LL 分析器）建构语法树。能以此方式分析的语法称为 LR 语法。而在 LR(k) 这样的名称中，k 代表的是分析时所需前瞻符号（lookahead symbol）的数量，也就是除了目前处理到的输入符号之外，还得再向右引用几个符号之意；省略 （k）时即视为 LR(1)，而非 LR(0)。
+> LL： LL 分析器是一种处理某些上下文无关文法的自顶向下分析器。因为它从左（Left）到右处理输入，再对句型执行最左推导出语法树（Left derivation，相对于 LR 分析器）。能以此方法分析的文法称为 LL 文法。

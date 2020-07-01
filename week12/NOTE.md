@@ -28,3 +28,39 @@
     很快，你也会意识到next数组各值的含义：代表当前字符之前的字符串中，有多大长度的相同前缀后缀。例如，如果 next[j] = k，代表j之前的字符串中有最大长度为k的相同前缀后缀。
 
     此也意味着在某个字符失配时，该字符对应的next值会告诉你下一步匹配中，模式串应该跳到哪个位置（跳到next[j]的位置）。如果next[j]等于0或 -1，则跳到模式串的开头字符，若next[j] = k 且 k > 0，代表下次匹配跳到j之前的某个字符，而不是跳到开头，且具体跳过了k个字符。
+
+```js
+function find(source, pattern) {
+  let table = new Array(pattern.length).fill(0);
+  let k = 0;
+
+  for (let j = 1; j < pattern.length; j++) {
+    if (pattern[j] === pattern[k]) {
+      k++;
+    } else {
+      k = 0;
+    }
+    table[j] = k;
+  }
+
+  let j = 0;
+
+  for (let i = 0; i < source.length; i++) {
+    console.log(source[i], pattern[j], j);
+
+    if (source[i] === pattern[j]) {
+      j++;
+    } else {
+      j = 0;
+      if (source[i] === pattern[j]) {
+        j++;
+      }
+    }
+
+    if (j === pattern.length) {
+      return true;
+    }
+  }
+  return false;
+}
+```

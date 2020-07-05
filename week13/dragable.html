@@ -1,0 +1,95 @@
+<style>
+  #dragable {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-color: pink;
+  }
+</style>
+<div id="container">
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字
+</div>
+<div id="dragable" draggable="true"></div>
+<script>
+  const dragable = document.getElementById("dragable");
+  // 标记初始坐标
+  let baseX = 0;
+  let baseY = 0;
+
+  dragable.addEventListener("mousedown", (e) => {
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const move = (event) => {
+      // const x = baseX + event.clientX - startX;
+      // const y = baseY + event.clientY - startY;
+      // dragable.style.transform = `translate(${x}px,${y}px)`;
+      let range = nearst(event.clientX,event.clientY);
+      range.insertNode(dragable);
+    };
+    const up = (event) => {
+      baseX = baseX + event.clientX - startX;
+      baseY = baseY + event.clientY - startY;
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up)
+  })
+
+  const ranges = [];
+  const container = document.getElementById("container");
+  for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
+    const range = document.createRange();
+    range.setStart(container.childNodes[0], i);
+    range.setEnd(container.childNodes[0], i);
+    ranges.push(range);
+  };
+
+  function nearst(x0, y0) {
+    let nearestRange = null;
+    let distance = Infinity;
+    for (const range of ranges) {
+      let { x, y } = range.getBoundingClientRect();
+      let d = (x0 - x) ** 2 + (y0 - y) ** 2;
+      if (d < distance) {
+        nearestRange = range;
+        distance = d;
+      }
+    }
+    return nearestRange;
+  }
+
+  document.addEventListener("selectstart", e => e.preventDefault())
+</script>

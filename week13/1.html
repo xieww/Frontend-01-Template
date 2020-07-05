@@ -14,7 +14,7 @@
         console.log(obj, prop);
         return obj[prop];
       },
-      get(obj, prop, val) {
+      set(obj, prop, val) {
         obj[prop] = val;
         if (handlerMap.get(obj) && handlerMap.get(obj).get(prop)) {
           for (const handler of handlerMap.get(obj).get(prop)) {

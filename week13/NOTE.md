@@ -36,3 +36,12 @@
 // Property:
 myComponent.a = “value”;
 ```
+
+#### 如何设计组件状态
+
+|   名称    | Markup set | JS set | JS Change | User Input Change |
+| :-------: | :--------: | :----: | :-------: | :---------------: |
+| Attribute |     ❌     |   ✅   |    ✅     |        ❓         |
+| Property  |     ✅     |   ✅   |    ✅     |        ❓         |
+|   State   |     ❌     |   ❌   |    ❌     |        ✅         |
+|  Config   |     ❌     |   ✅   |    ❌     |        ❌         |

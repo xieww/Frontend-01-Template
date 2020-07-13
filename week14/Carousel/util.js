@@ -10,7 +10,6 @@ export function createElement(Cls, attributes, ...children) {
   }
 
   for (let name in attributes) {
-    // o[name] = attributes[name];
     o.setAttribute(name, attributes[name]);
   }
 

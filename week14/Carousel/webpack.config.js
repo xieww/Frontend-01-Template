@@ -20,6 +20,12 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.view/,
+        use: {
+          loader: require.resolve("./parserLoader.js"),
+        },
+      },
     ],
   },
   mode: "development",

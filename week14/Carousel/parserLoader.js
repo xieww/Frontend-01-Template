@@ -11,7 +11,7 @@ module.exports = function (source, map) {
   let script = null;
   for (const node of tree.children) {
     if (node.tagName === "template") {
-      template = node;
+      template = node.children.find((e) => e.type !== "text");
     } else if (node.tagName === "script") {
       script = node.children[0].content;
     }
@@ -27,7 +27,9 @@ module.exports = function (source, map) {
     }
 
     let children = node.children.map((node) => visit(node));
-    return `createElement("${node.tagName}",${JSON.stringify(attrs)},${children})`;
+    return `createElement("${node.tagName}",${JSON.stringify(
+      attrs
+    )},${children})`;
   };
 
   const pData = `

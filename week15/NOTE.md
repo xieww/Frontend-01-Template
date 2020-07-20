@@ -2,7 +2,7 @@
 
 ## 类 vue 的 SFC
 
-![SFC](../week14)
+[SFC](../week14)
 
 ```js
 module.exports = function (source, map) {

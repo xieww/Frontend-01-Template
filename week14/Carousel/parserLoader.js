@@ -2,10 +2,6 @@ var parser = require("./parser");
 
 module.exports = function (source, map) {
   let tree = parser.parseHTML(source);
-  // console.log(
-  //   "=================loader执行中================",
-  //   this.resourcePath
-  // );
 
   let template = null;
   let script = null;

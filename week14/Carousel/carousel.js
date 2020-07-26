@@ -1,7 +1,6 @@
 import { createElement, Text, Wrapper } from "./util";
 import { TimeLine, Animation } from "./animation";
 import { ease } from "./cubicBezier";
-import { enableGesture } from "./gesture";
 
 export class Carousel {
   constructor(config) {
@@ -50,24 +49,78 @@ export class Carousel {
       };
 
       let onPan = (event) => {
-        const currentTransformValue = 500 * currentPosition + offset;
-        const nextTransformValue = 500 - 500 * nextPosition + offset;
-        const lastTransformValue = -500 - 500 * lastPosition + offset;
-        let dx = event.clientX - event.startX;
+        const currentTransformValue = 500 * currentPosition + offset + dx;
+        const nextTransformValue = 500 - 500 * nextPosition + offset + dx;
+        const lastTransformValue = -500 - 500 * lastPosition + offset + dx;
+        const dx = event.clientX - event.startX;
 
         const currentElement = children[currentPosition];
         const nextElement = children[nextPosition];
         const lastElement = children[lastPosition];
 
-        currentElement.style.transform = `translateX(${
-          currentTransformValue + dx
-        }px)`;
-        nextElement.style.transform = `translateX(${
-          nextTransformValue + dx
-        }px)`;
-        lastElement.style.transform = `translateX(${
-          lastTransformValue + dx
-        }px)`;
+        currentElement.style.transform = `translateX(${currentTransformValue}px)`;
+        nextElement.style.transform = `translateX(${nextTransformValue}px)`;
+        lastElement.style.transform = `translateX(${lastTransformValue}px)`;
+
+        console.log("event", event);
+      };
+
+      let onPanend = (event) => {
+        let direction = 0;
+        const dx = event.clientX - event.startX;
+
+        if (dx + offset > 250) {
+          direction = 1; // 往右拖动
+        } else if (dx + offset < -250) {
+          direction = -1; // 往左拖动
+        }
+        timeline.reset();
+        timeline.start();
+
+        const currentElement = children[currentPosition];
+        const nextElement = children[nextPosition];
+        const lastElement = children[lastPosition];
+
+        const currentTransformValue = 500 * currentPosition + offset + dx;
+        const nextTransformValue = 500 - 500 * nextPosition + offset + dx;
+        const lastTransformValue = -500 - 500 * lastPosition + offset + dx;
+        const currentAnimation = new Animation(
+          currentElement.style,
+          "transform",
+          (v) => `translateX(${v}px)`,
+          currentTransformValue,
+          -500 * currentPosition + direction * 500,
+          500,
+          0,
+          ease
+        );
+        const nextAnimation = new Animation(
+          nextElement.style,
+          "transform",
+          (v) => `translateX(${v}px)`,
+          nextTransformValue,
+          500 - 500 * nextPosition + direction * 500,
+          500,
+          0,
+          ease
+        );
+        const lastAnimation = new Animation(
+          lastElement.style,
+          "transform",
+          (v) => `translateX(${v}px)`,
+          lastTransformValue,
+          -500 - 500 * lastPosition + direction * 500,
+          500,
+          0,
+          ease
+        );
+
+        timeline.add(currentAnimation);
+        timeline.add(nextAnimation);
+        timeline.add(lastAnimation);
+
+        position = (position - direction + this.data.length) % this.data.length;
+        nextPicStopHandler = setTimeout(nextPic, 3000);
       };
 
       const element = (
@@ -76,6 +129,7 @@ export class Carousel {
           draggable="false"
           onStart={onStart}
           onPan={onPan}
+          onPanend={onPanend}
           enableGesture={true}
         />
       );

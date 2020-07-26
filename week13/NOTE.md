@@ -45,3 +45,5 @@ myComponent.a = “value”;
 | Property  |     ✅     |   ✅   |    ✅     |        ❓         |
 |   State   |     ❌     |   ❌   |    ❌     |        ✅         |
 |  Config   |     ❌     |   ✅   |    ❌     |        ❌         |
+
+

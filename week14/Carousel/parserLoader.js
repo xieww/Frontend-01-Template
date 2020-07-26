@@ -45,8 +45,5 @@ module.exports = function (source, map) {
     }
   }
   `;
-
-  console.log("==============pData=================", pData);
-
   return pData;
 };

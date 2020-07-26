@@ -75,7 +75,6 @@ export function enableGesture(element) {
 
       element.dispatchEvent(new CustomEvent("pressstart", {}));
     }, 500);
-    console.log("start", context, point, point.clinetX);
   };
 
   let move = (point, context) => {
@@ -120,7 +119,6 @@ export function enableGesture(element) {
       });
       event.dispatchEvent(e);
     }
-    console.log("move", dx, dy, context);
   };
 
   let end = (point, context) => {

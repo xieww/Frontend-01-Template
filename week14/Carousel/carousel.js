@@ -19,14 +19,71 @@ export class Carousel {
   }
 
   render() {
-    const children = this.data.map((url) => (
-      <img src={url} draggable="false" />
-    ));
-    const root = <div class="carousel">{children}</div>;
-
     let position = 0;
     let timeline = new TimeLine();
     timeline.start();
+
+    let nextPicStopHandler = null;
+
+    let onStart = () => {
+      timeline.pause();
+      clearTimeout(nextPicStopHandler);
+    };
+
+    const children = this.data.map((url, currentPosition) => {
+      const nextPosition = (currentPosition + 1) % this.data.length;
+      const lastPosition =
+        (currentPosition - 1 + this.data.length) % this.data.length;
+
+      let offset = 0;
+
+      let onStart = () => {
+        timeline.pause();
+        clearTimeout(nextPicStopHandler);
+
+        const currentElement = children[currentPosition];
+
+        const currentTransformValue = Number(
+          currentElement.style.transform.match(/translateX\(([\s\S]+)px\)/)[1]
+        );
+        offset = currentTransformValue + 500 * currentPosition;
+      };
+
+      let onPan = (event) => {
+        const currentTransformValue = 500 * currentPosition + offset;
+        const nextTransformValue = 500 - 500 * nextPosition + offset;
+        const lastTransformValue = -500 - 500 * lastPosition + offset;
+        let dx = event.clientX - event.startX;
+
+        const currentElement = children[currentPosition];
+        const nextElement = children[nextPosition];
+        const lastElement = children[lastPosition];
+
+        currentElement.style.transform = `translateX(${
+          currentTransformValue + dx
+        }px)`;
+        nextElement.style.transform = `translateX(${
+          nextTransformValue + dx
+        }px)`;
+        lastElement.style.transform = `translateX(${
+          lastTransformValue + dx
+        }px)`;
+      };
+
+      const element = (
+        <img
+          src={url}
+          draggable="false"
+          onStart={onStart}
+          onPan={onPan}
+          enableGesture={true}
+        />
+      );
+      element.style.transform = "translateX(0px)";
+      element.addEventListener("dragstart", (e) => e.preventDefault());
+      return element;
+    });
+    const root = <div class="carousel">{children}</div>;
 
     let nextPic = () => {
       const nextPosition = (position + 1) % this.data.length;
@@ -36,7 +93,7 @@ export class Carousel {
       const currentAnimation = new Animation(
         current.style,
         "transform",
-        (v) => `translate(${v}%)`,
+        (v) => `translateX(${5 * v}px)`,
         -100 * position,
         -100 - 100 * position,
         500,
@@ -46,7 +103,7 @@ export class Carousel {
       const nextAnimation = new Animation(
         next.style,
         "transform",
-        (v) => `translate(${v}%)`,
+        (v) => `translateX(${5 * v}px)`,
         100 - 100 * nextPosition,
         -100 * nextPosition,
         500,
@@ -59,9 +116,9 @@ export class Carousel {
 
       position = nextPosition;
 
-      setTimeout(nextPic, 3000);
+      nextPicStopHandler = setTimeout(nextPic, 3000);
     };
-    setTimeout(nextPic, 3000);
+    nextPicStopHandler = setTimeout(nextPic, 3000);
 
     root.addEventListener("mousedown", (event) => {
       let startX = event.clientX;

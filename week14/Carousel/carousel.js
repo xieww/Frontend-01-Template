@@ -24,11 +24,6 @@ export class Carousel {
 
     let nextPicStopHandler = null;
 
-    let onStart = () => {
-      timeline.pause();
-      clearTimeout(nextPicStopHandler);
-    };
-
     const children = this.data.map((url, currentPosition) => {
       const nextPosition = (currentPosition + 1) % this.data.length;
       const lastPosition =

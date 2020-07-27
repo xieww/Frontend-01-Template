@@ -61,14 +61,11 @@ export class Carousel {
         currentElement.style.transform = `translateX(${currentTransformValue}px)`;
         nextElement.style.transform = `translateX(${nextTransformValue}px)`;
         lastElement.style.transform = `translateX(${lastTransformValue}px)`;
-
-        console.log("event", event);
       };
 
       let onPanend = (event) => {
         let direction = 0;
         const dx = event.clientX - event.startX;
-
         if (dx + offset > 250) {
           direction = 1; // 往右拖动
         } else if (dx + offset < -250) {

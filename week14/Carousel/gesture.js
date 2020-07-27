@@ -1,8 +1,10 @@
 export function enableGesture(element) {
   let contexts = Object.create(null);
+
   let MOUSE_SYMBOL = Symbol("mouse");
 
   if (document.ontouchstart !== null) {
+    // document.ontouchstart 在非触屏下是 undefined，在触屏下是 null
     element.addEventListener("mousedown", (event) => {
       contexts[MOUSE_SYMBOL] = Object.create(null);
 
@@ -10,7 +12,6 @@ export function enableGesture(element) {
       let mousemove = (event) => {
         move(event, contexts[MOUSE_SYMBOL]);
       };
-
       let mouseend = (event) => {
         end(event, contexts[MOUSE_SYMBOL]);
         document.removeEventListener("mousemove", mousemove);
@@ -21,6 +22,11 @@ export function enableGesture(element) {
       document.addEventListener("mouseup", mouseend);
     });
   }
+
+  // tap
+  // pan(panstart/panmove/panend)
+  // flick
+  // press(pressstart/pressend)
 
   element.addEventListener("touchstart", (event) => {
     for (let touch of event.changedTouches) {
@@ -52,50 +58,51 @@ export function enableGesture(element) {
   let start = (point, context) => {
     element.dispatchEvent(
       new CustomEvent("start", {
-        startX: point.clinetX,
-        startY: point.clinetY,
-        clinetX: point.clinetX,
-        clinetY: point.clinetY,
+        detail: {
+          startX: point.clientX,
+          startY: point.clientY,
+          clientX: point.clientX,
+          clientY: point.clientY,
+        },
       })
     );
-    context.startX = point.clinetX;
-    context.startY = point.clinetY;
+
+    context.startX = point.clientX;
+    context.startY = point.clientY;
+
     context.moves = [];
-    context.isTap = true;
+
+    context.isTab = true;
     context.isPan = false;
     context.isPress = false;
-    context.timoutHandler = setTimeout(() => {
+
+    context.timeoutHandler = setTimeout(() => {
       if (context.isPan) {
         return;
       }
 
-      context.isTap = false;
+      context.isTab = false;
       context.isPan = false;
       context.isPress = true;
-
-      element.dispatchEvent(new CustomEvent("pressstart", {}));
+      console.log("pressstart");
     }, 500);
   };
-
   let move = (point, context) => {
-    const dx = point.clinetX - context.startX;
-    const dy = point.clinetY - context.startY;
+    let dx = point.clientX - context.startX;
+    let dy = point.clientY - context.startY;
 
     if (dx ** 2 + dy ** 2 > 100 && !context.isPan) {
-      if (context.isPress) {
-        element.dispatchEvent(new CustomEvent("presscancel", {}));
-      }
-
-      context.isTap = false;
+      context.isTab = false;
       context.isPan = true;
-      context.isPress = true;
-
+      context.isPress = false;
       element.dispatchEvent(
         new CustomEvent("panstart", {
-          startX: context.startX,
-          startY: context.startY,
-          clinetX: point.clinetX,
-          clinetY: point.clinetY,
+          detail: {
+            startX: context.startX,
+            startY: context.startY,
+            clientX: point.clientX,
+            clientY: point.clientY,
+          },
         })
       );
     }
@@ -106,26 +113,31 @@ export function enableGesture(element) {
         dy,
         t: Date.now(),
       });
-
       context.moves = context.moves.filter(
         (record) => Date.now() - record.t < 300
       );
-      let e = new CustomEvent("pan");
-      Object.assign(e, {
-        startX: context.startX,
-        startY: context.startY,
-        clinetX: point.clinetX,
-        clinetY: point.clinetY,
-      });
-      event.dispatchEvent(e);
+      element.dispatchEvent(
+        new CustomEvent("panmove", {
+          detail: {
+            startX: context.startX,
+            startY: context.startY,
+            clientX: point.clientX,
+            clientY: point.clientY,
+          },
+        })
+      );
     }
   };
-
   let end = (point, context) => {
+    if (context.isTab) {
+      element.dispatchEvent(new CustomEvent("tap", {}));
+    }
     if (context.isPan) {
-      let dx = point.clinetX - context.startX;
-      let dy = point.clinetY - context.startY;
+      let dx = point.clientX - context.startX;
+      let dy = point.clientY - context.startY;
+
       let record = context.moves[0];
+
       let speed =
         Math.sqrt((record.dx - dx) ** 2 + (record.dy - dy) ** 2) /
         (Date.now() - record.t);
@@ -133,43 +145,29 @@ export function enableGesture(element) {
       let isFlick = speed > 2.5;
 
       if (isFlick) {
-        element.dispatchEvent(
-          new CustomEvent("flick", {
-            startX: context.startX,
-            startY: context.startY,
-            clinetX: point.clinetX,
-            clinetY: point.clinetY,
-            speed,
-          })
-        );
+        element.dispatchEvent(new CustomEvent("flick", {}));
       }
 
       element.dispatchEvent(
-        Object.assign(new CustomEvent("panend"), {
-          startX: context.startX,
-          startY: context.startY,
-          clinetX: point.clinetX,
-          clinetY: point.clinetY,
-          speed,
-          isFlick,
+        new CustomEvent("panend", {
+          detail: {
+            startX: context.startX,
+            startY: context.startY,
+            clientX: point.clientX,
+            clientY: point.clientY,
+            speed,
+            isFlick,
+          },
         })
       );
     }
-
-    if (context.isTap) {
-      element.dispatchEvent(new CustomEvent("tap", {}));
-    }
-
     if (context.isPress) {
-      element.dispatchEvent(new CustomEvent("pressend"), {});
+      element.dispatchEvent(new CustomEvent("pressend", {}));
     }
 
-    clearTimeout(context.timoutHandler);
+    clearTimeout(context.timeoutHandler);
   };
-
-  // xuminle520
   let cancel = (point, context) => {
-    element.dispatchEvent(new CustomEvent("canceled"), {});
-    clearTimeout(context.timoutHandler);
+    clearTimeout(context.timeoutHandler);
   };
 }

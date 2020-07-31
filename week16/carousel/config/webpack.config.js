@@ -34,6 +34,13 @@ module.exports = {
           ],
         },
       },
+      {
+        test: /\.css$/, // 匹配文件路径的正则表达式，通常我们都是匹配文件类型后缀
+        use: {
+          // loader: "css-loader", // 指定使用的 loader
+          loader: require.resolve("./css-loader.js"), // 指定使用的 loader
+        },
+      },
     ],
   },
   plugins: [

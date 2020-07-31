@@ -1,6 +1,9 @@
 import { createElement, Text, Wrapper } from "./util";
 import { TimeLine, Animation } from "./animation";
 import { ease } from "./cubicBezier";
+import styles from "./carousel.css";
+
+// console.log("styles", styles);
 
 export class Carousel {
   constructor(config) {

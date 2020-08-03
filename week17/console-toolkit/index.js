@@ -1,4 +1,3 @@
-// var stdin = process.stdin;
 var ttys = require("ttys");
 
 var stdin = ttys.stdin;
@@ -35,21 +34,21 @@ function left(n = 1) {
 void (async function () {
   stdout.write("which framework do you want to use?\n");
   let answer = await select(["vue", "react", "angular"]);
-  stdout.write("You selected" + answer + "\n");
-
+  stdout.write("You selected " + answer + "\n");
   process.exit();
 })();
 
 async function select(choices) {
   let selected = 0;
   for (let i = 0; i < choices.length; i++) {
-    const choice = choices[i];
+    let choice = choices[i];
     if (i === selected) {
-      stdout.write("[\x1b[32mx\x1b[0m]" + choice + "\n");
+      stdout.write("[x] " + choice + "\n");
     } else {
-      stdout.write("[ ]" + choice + "\n");
+      stdout.write("[ ] " + choice + "\n");
     }
   }
+
   up(choices.length);
   right();
   while (true) {
@@ -63,18 +62,18 @@ async function select(choices) {
       left();
       selected--;
       up();
-      stdout.write("[\x1b[32mx\x1b[0m]");
+      stdout.write("x");
       left();
     }
-    if (char === "s" && selected > choices.length - 1) {
+    if (char === "s" && selected < choices.length - 1) {
       stdout.write(" ");
       left();
       selected++;
       down();
-      stdout.write("[\x1b[32mx\x1b[0m]");
+      stdout.write("x");
       left();
     }
-    if (char === "\n") {
+    if (char === "\r") {
       down(choices.length - selected);
       left();
       return choices[selected];

@@ -6,6 +6,5 @@
   "exclude": [
     "**/*.spec.js"
   ],
-  "extension":[".mjs"]
-  "excludeNodeModules": false
+  "extends":"@istanbuljs/nyc-config-babel"
 }

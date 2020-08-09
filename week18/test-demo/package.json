@@ -1,0 +1,35 @@
+{
+  "name": "test-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "nyc mocha",
+    "coverages": "nyc ava"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ava/babel": "^1.0.1",
+    "@babel/core": "^7.11.1",
+    "@babel/register": "^7.10.5",
+    "ava": "^3.11.1",
+    "babel-loader": "^8.1.0",
+    "mocha": "^8.1.1",
+    "nyc": "^15.1.0"
+  },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "babel": {
+      "testOptions": {
+        "babelrc": true
+      }
+    }
+  }
+}

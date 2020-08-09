@@ -6,6 +6,6 @@
   "exclude": [
     "**/*.spec.js"
   ],
-  extension:[".mjs"]
+  "extension":[".mjs"]
   "excludeNodeModules": false
 }

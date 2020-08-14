@@ -1,4 +1,4 @@
-import { createElement } from "./util";
+import { createElement } from "./lib/util";
 
 let component = <div>hello world!s</div>;
 

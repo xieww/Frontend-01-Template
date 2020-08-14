@@ -21,12 +21,28 @@ module.exports = class extends Generator {
       { title: this.answers.title } // user answer `title` used
     );
     this.fs.copyTpl(
+      this.templatePath(".nycrc"),
+      this.destinationPath(".nycrc")
+    );
+    this.fs.copyTpl(
+      this.templatePath(".babelrc"),
+      this.destinationPath(".babelrc")
+    );
+    this.fs.copyTpl(
       this.templatePath("util.js"),
-      this.destinationPath("lib/util.js")
+      this.destinationPath("src/lib/util.js")
+    );
+    this.fs.copyTpl(
+      this.templatePath("gesture.js"),
+      this.destinationPath("src/lib/gesture.js")
     );
     this.fs.copyTpl(
       this.templatePath("index.js"),
       this.destinationPath("src/index.js")
+    );
+    this.fs.copyTpl(
+      this.templatePath("index.test.js"),
+      this.destinationPath("test/index.test.js")
     );
     this.fs.copyTpl(
       this.templatePath("index.html"),
@@ -52,6 +68,7 @@ module.exports = class extends Generator {
         "nyc",
         "babel-plugin-istanbul",
         "@istanbuljs/nyc-config-babel",
+        "@babel/register",
       ],
       {
         "save-dev": true,

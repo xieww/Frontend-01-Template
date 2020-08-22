@@ -8,6 +8,6 @@ const data = [
   "https://static001.geekbang.org/resource/image/73/e4/730ea9c393def7975deceb48b3eb6fe4.jpg",
 ];
 
-let component = <Carousel data={data} />;
+const component = <Carousel data={data} />;
 
 component.mountTo(document.body);

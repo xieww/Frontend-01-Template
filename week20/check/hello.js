@@ -9,15 +9,19 @@ page.open("http://localhost:8000/", function (status) {
 
     var body = page.evaluate(function () {
       var toString = function (pad, element) {
-        console.log("element", elements);
-        var children = element.children;
+        var children = element.childNodes;
         var childrenString = "";
-        for (let i = 0; i < element.children.length; i++) {
-          childrenString += toString("    " + pad, element.children[i] + "\n");
+        for (var i = 0; i < children.length; i++) {
+          childrenString += toString("    " + pad, children[i] + "\n");
         }
-        return (
-          pad + element.tagName + (childrenString ? "\n" + childrenString : "")
-        );
+        var name;
+        if (element.nodeType ===  Node.TEXT_NODE ) {
+          name = "#text " + JSON.stringify(element.textContent);
+        }
+        if (element.nodeType === Node.ELEMENT_NODE ) {
+          name = element.tagName;
+        }
+        return pad + name + (childrenString ? "\n" + childrenString : "");
       };
       return toString("", document.body);
     });

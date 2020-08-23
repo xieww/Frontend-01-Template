@@ -4,7 +4,7 @@
   "description": "public",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./public.js"
   },
   "keywords": [
     "public"
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "archiver": "^5.0.0",
+    "child_process": "^1.0.2",
     "querystring": "^0.2.0"
   }
 }

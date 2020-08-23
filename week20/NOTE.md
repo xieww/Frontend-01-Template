@@ -132,3 +132,7 @@ function request(url, method) {
 
 request("https://api.github.com/user", "GET");
 ```
+
+### 结合发布系统
+
+[发布系统](../week19/publish)

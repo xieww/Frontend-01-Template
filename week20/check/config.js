@@ -11,7 +11,7 @@ const redirect_uri = encodeURIComponent("http://localhost:8000");
 const params = `code=${code}&state=${state}&client_secret=${client_secret}&client_id=${client_id}&redirect_uri=${redirect_uri}`;
 const request_url = `https://github.com/login/oauth/access_token?${params}`;
 
-function request(url, method,config) {
+function request(url, method) {
   var xmlhttp;
   if (window.XMLHttpRequest) {
     //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码

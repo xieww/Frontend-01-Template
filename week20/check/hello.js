@@ -1,6 +1,3 @@
-// console.log('Hello, world!');
-// phantom.exit();
-
 var page = require("webpage").create();
 page.open("http://localhost:8000/", function (status) {
   console.log("Status: " + status);

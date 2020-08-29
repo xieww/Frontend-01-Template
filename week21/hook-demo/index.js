@@ -1,5 +1,7 @@
 const a = 10;
 
 if (a === 1) {
-  console.log('=====不执行======');
+  let b = 1;
+  b = 3;
+  b.toString();
 }
